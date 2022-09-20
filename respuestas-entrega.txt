@@ -1,0 +1,22 @@
+Preguntas
+
+1. ¿Qué crítica le harías al protocolo de #estaHerido y #noEstaHerido? (en vez de tener solo el mensaje #estaHerido y hacer “#estaHerido not” para saber la negación)
+
+2. ¿Qué opinan de que para algunas funcionalidades tenemos 3 tests para el mismo comportamiento pero aplicando a cada uno de los combatientes (Arthas, Mankrik y Olgra)
+
+3. ¿Cómo modelaron el resultado de haber desarrollado un combate? ¿qué opciones consideraron y por qué se quedaron con la que entregaron y por qué descartaron a las otras?
+
+Respuestas
+
+1.La crítica que haríamos es que estamos agregando un mensaje mas, cuando en realidad solo con un mensaje y la negación tendriamos cubierto ambos comportamientos. Pese a esto, esta bueno darle al usuario ambos mensajes para que el tenga mas posibilidades de mensajes dentro del modelo del problema y no tenga que recurrir a un mensaje externo a este (como not) que no tiene porque conocerlo.
+
+2.Esta bien que se apliquen los 3 a los mismos combatientes porque son distintos objetos y por ende podrian tener un mensaje que realice un comportamiento distinto y erroneo, pero, nosotros aplicamos un modelo en el que un combatiente es padre de los otros dos, de esta forma implementamos un mensaje por única vez y así evitamos propagar errores en el comportamiento de mensajes iguales. Por eso, en nuestra forma de implementacion con solamente testear un combatiente ya alcanzaría, ya que los tres se comportan de la misma manera.
+
+3. El resultado de haber desarrollado un combate puede ser el objeto PrimerBando, el objeto SegundoBando o #indeterminado.
+El OrquestadorDeCombate ira chequeando a medida que pasen las rondas si hay algun ganador, pidiendole a cada bando que diga quienes son sus combatientes que sigen vivos. Si ve que hay un ganador, este se guarda en el colaborador interno ganadorDeCombate que sera devuelto, y además se guarda en el colaborador interno rondaAlcanzada la última ronda que se desarrollo. En el caso de que se agoten las rondas, el ganador del combate será #indeterminado, y la rondaAlcanzada será el número máximo de rondas en el que se podía desarrollar el combate.
+Decidimos implementarlo de esta forma porque nos parece adecuado que cada bando sea un objeto con mensajes para responder, como quienes son sus combatientes vivos, o que realice todo el bando un ataque, por ejemplo. A nuestro parecer sería incorrecto que el objeto OrquestadorDeCombate sea el encargado de iterar a cada integrante de un bando para atacar, o que deba ingresar a los integrantes del bando para saber su vida y ver si siguen vivos. Si esto sucede estaríamos rompiendo un nivel de abstracción dejando que el OrquestadorDeCombate se encargue de comportamientos que tiene cada integrante, que no tiene porque conocerlos. En cambio, siendo los bandos objetos apartes tenemos mayor abstracción ya que estos objetos deben saber que realizar con sus integrantes, y que no. Así conseguimos evitar romper capsulamiento y además, de esta forma logramos una cantidad de mensajes a responder por cada objeto más acotada y específica, acorde a un mejor diseño y modularización.
+
+Otra de las opciones que manejamos fue la de solo tener el objeto OrquestadorDeCombate y que este se encargue de responder todos los mensajes pero nos dimos cuenta que habían mensajes que no debería saber responder. Estos eran chequear la vida de los integrantes de un bando, o decirle a un bando como atacar. Además, el OrquestadorDeCombate no tendría porque conocer a los miembros de cada bando, sino que solamente conocer que tiene dos bandos que pelearan entre si, asbtrayendose también de la forma en la que pelean. Pese a que esta fue nuestra primera forma de resolver el problema y logramos pasar todos los test no nos cerraban estos detalles, le quitaba niveles de asbtracción al modelo y además sería más costoso de cambiar en un futuro. Estos detalles hicieron que decidamos descartar esta opción que en un principio nos parecia adecuada. 
+
+La última de las opciones que planteamos fue que el resultado del combate sea strings "primer bando", "segundo bando", "indeterminado". Lo malo de esta forma es que tendriamos dos veces definidos a los bandos. Estarian en los objetos cuando asignamos a cada uno y en estos strings, que encima no servirían de mucho salvo de dar el resultado del combate, algo que perfectamente puede también hacer la forma en la que implementamos.
+
