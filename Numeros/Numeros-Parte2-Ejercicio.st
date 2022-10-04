@@ -396,7 +396,7 @@ canNotDivideByZeroErrorDescription
 
 !Numero class methodsFor: 'error descriptions' stamp: 'NR 5/7/2020 17:46:56'!
 invalidNumberTypeErrorDescription
-	^ 'Tipo de NÃºmero InvÃ¡lido'! !
+	^ 'Tipo de Número Inválido'! !
 
 
 !classDefinition: #Entero category: 'Numeros-Parte2-Ejercicio'!
@@ -538,6 +538,28 @@ sumarConLaFraccion: unaFraccion
 
 	^unaFraccion denominator * self + unaFraccion numerator / unaFraccion denominator! !
 
+
+!Entero methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 13:07:27'!
+accionParaElDenominadorConElNumerador: unNumerador
+
+	^Fraccion new initializeWith: unNumerador over: self.! !
+
+!Entero methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 13:08:06'!
+accionParaElDividendoConElDivisor: unDivisor
+
+	| greatestCommonDivisor numerator denominator |
+	
+	greatestCommonDivisor := self greatestCommonDivisorWith: unDivisor. 
+	numerator := self // greatestCommonDivisor.
+	denominator := unDivisor // greatestCommonDivisor.
+	
+	^denominator accionParaElDenominadorConElNumerador: numerator! !
+
+!Entero methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 13:08:32'!
+accionParaElDivisorConElDividendo: unDividendo
+
+	^unDividendo accionParaElDividendoConElDivisor: self.! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Entero class' category: 'Numeros-Parte2-Ejercicio'!
@@ -546,7 +568,7 @@ Entero class
 
 !Entero class methodsFor: 'error descriptions' stamp: 'NR 4/8/2019 02:57:57'!
 negativeFibonacciErrorDescription
-	^ ' Fibonacci no estÃ¡ definido aquÃ­ para Enteros Negativos'! !
+	^ ' Fibonacci no está definido aquí para Enteros Negativos'! !
 
 
 !Entero class methodsFor: 'instance creation' stamp: 'pg 10/3/2022 20:09:15'!
@@ -575,6 +597,17 @@ calcularFibonacci
 
 	^Entero with: 1.! !
 
+
+!Cero methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 12:54:22'!
+accionParaElDividendoConElDivisor: unDivisor
+
+	^self! !
+
+!Cero methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 12:54:42'!
+accionParaElDivisorConElDividendo: unDividendo
+
+	^self error: Numero canNotDivideByZeroErrorDescription ! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Cero class' category: 'Numeros-Parte2-Ejercicio'!
@@ -598,6 +631,12 @@ Entero subclass: #Negativos
 calcularFibonacci
 
 	^self error: Entero negativeFibonacciErrorDescription! !
+
+
+!Negativos methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 12:56:41'!
+accionParaElDivisorConElDividendo: unDividendo
+
+	^unDividendo negated / self negated! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -649,6 +688,13 @@ Entero subclass: #Uno
 calcularFibonacci
 
 	^Entero with: 1.! !
+
+
+!Uno methodsFor: 'fraccion - initialization' stamp: 'pg 10/4/2022 12:57:55'!
+accionParaElDenominadorConElNumerador: unNumerador
+
+	^unNumerador
+! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -807,21 +853,8 @@ sumarConLaFraccion: unaFraccion
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'NR 9/23/2018 23:45:19'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'pg 10/4/2022 13:01:49'!
 with: aDividend over: aDivisor
-
-	| greatestCommonDivisor numerator denominator |
 	
-	aDivisor isZero ifTrue: [ self error: self canNotDivideByZeroErrorDescription ].
-	aDividend isZero ifTrue: [ ^aDividend ].
-	
-	aDivisor isNegative ifTrue:[ ^aDividend negated / aDivisor negated].
-	
-	greatestCommonDivisor := aDividend greatestCommonDivisorWith: aDivisor. 
-	numerator := aDividend // greatestCommonDivisor.
-	denominator := aDivisor // greatestCommonDivisor.
-	
-	denominator isOne ifTrue: [ ^numerator ].
-
-	^self new initializeWith: numerator over: denominator
+	^aDivisor accionParaElDivisorConElDividendo: aDividend
 	! !
