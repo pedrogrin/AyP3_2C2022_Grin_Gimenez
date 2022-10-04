@@ -1,0 +1,35 @@
+Preguntas teóricas
+
+1.
+Aporte de los mensajes de DD
+En un double dispatch (DD), ¿qué información aporta cada uno de los dos llamados?
+
+En un double dispatch cada envío de mensaje reduce una variable polimórfica a una monomórfica.
+Sin embargo, en el ejemplo doblemente polimórfico el envío del primer mensaje solo hace la mitad del trabajo, el argumento del método de destino sigue siendo polimórfico. 
+En nuestro caso por ejemplo el primer llamado aporta el objeto que va a colaborar en el segundo llamado y en el segundo se aporta la forma en que se comporta la clase que colabora en el primer llamado. Podríamos decir que el primer llamado aporta quien colabora, y el segundo como colabora.
+
+2.
+Lógica de instanciado
+Con lo que vieron y saben hasta ahora, ¿donde les parece mejor tener la lógica de cómo instanciar un objeto? ¿por qué? ¿Y si se crea ese objeto desde diferentes lugares y de diferentes formas? ¿cómo lo resuelven?
+
+Nos parece mejor tener la lógica de instanciar un objeto en un mensaje de clase ya que ahí se puede controlar mejor la forma de instanciarlo, ya que no es necesario trabajar con objetos instanciados, sino que lo podemos hacer con clases. Parece mejor opción porque si se hace en métodos de instancias habría que buscar en que método estamos instanciando el objeto y podríamos tenerlo en más de un lugar.
+Si lo creamos en diferentes lugares y diferentes formas podríamos tener un objeto inconsistente. La solución es instanciarlo en el método de clase porque nos parece el mejor lugar donde instanciar el objeto.
+
+3.
+Nombres de las categorías de métodos
+Con lo que vieron y trabajaron hasta ahora, ¿qué criterio están usando para categorizar métodos?
+
+Para categorizar los métodos estamos usando el criterio de agruparlos según el comportamiento que tienen, por ejemplo, operaciones aritméticas, inicializar un objeto o testear un objeto. Es decir, agrupamos métodos QUE hacen la misma accion.
+
+4.
+Subclass Responsibility
+Si todas las subclases saben responder un mismo mensaje, ¿por qué ponemos ese mensaje sólo con un “self subclassResponsibility” en la superclase? ¿para qué sirve?
+
+Lo ponemos para que si creamos una nueva subclase derivada de esa superclase (que contiene el mensaje self subclassResponsibility) nos demos cuenta, o nos acordemos, que debemos implementar ese metódo en esta nueva subclase, ya que están son las encargadas de la forma en que la acción se efectua. Lo que no debe diferir entre todos estos mensajes es el próposito, que debe quedar claro cuando uno lee la descripción del mensaje en la superclase.
+
+5.
+No rompas
+¿Por qué está mal/qué problemas trae romper encapsulamiento?
+
+Porque un objeto no debería saber lo que contiene otro objeto externo a él, es algo no acorde con la realidad. Un primer objeto no tendría porque manejar a un segundo objeto, sino que este primer objeto debe pedirle a ese segundo objeto lo que necesite de él, y este segundo objeto tener un mensaje en el que realice esa acción solicitada.
+Además, si un primer objeto puede manejar a otro segundo objeto podría realizarle cambios a este segundo objeto, y este podría ni enterarse, o por más que se entere, no tendría porque tener permitido un objeto modificar colaboradores de otro, por ejemplo.
