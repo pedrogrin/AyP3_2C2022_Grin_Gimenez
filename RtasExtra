@@ -1,0 +1,4 @@
+Respuesta sobre el extra:
+
+A nuestro parecer, modelarlo de la forma que tengamos un Top y luego Base o Element nos simplifico poder limitar el stack, ya que lo único que tuvimos que hacer fue dividir a los elementos para un stack ilimitado y para un stack limitado. Los elementos que iban para el stack limitado debían tener en cuenta el tamaño máximo del stack, y verificar si ellos no superaban ese límite, que de ser así devolverían el error de que estaba lleno y no tenían lugar.
+
