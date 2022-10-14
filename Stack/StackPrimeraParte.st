@@ -125,9 +125,9 @@ Stack class
 !Stack class methodsFor: 'error messages' stamp: 'pg 10/8/2022 15:30:26'!
 canNotPopWithEmptyStackDescription
 
-	^'No se puede sacar un elemento del stack si esta vacío'! !
+	^'No se puede sacar un elemento del stack si esta vacÃ­o'! !
 
 !Stack class methodsFor: 'error messages' stamp: 'pg 10/8/2022 15:54:28'!
 canNotTopWithEmptyStackDescription
 
-	^'No se puede ver el ultimo elemento del stack si esta vacío'! !
+	^'No se puede ver el ultimo elemento del stack si esta vacÃ­o'! !
